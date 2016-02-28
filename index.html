@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Graphamerator</title>
+    <meta property="og:image" content="http://picklenerd.com/math/graphamerator/graph.png"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="gl-matrix.js"></script>
+    <script type="text/javascript" src="webgl-helpers.js"></script>
+    <script type="text/javascript" src="helpers.js"></script>
+    <script type="text/javascript" src="caley-graph/caley-graph.js"></script>
+    <script type="text/javascript" src="caley-graph/graph-elements.js"></script>
+
+    <!------- Shader Scripts ------->
+    <script id="shader-vs" type="x-shader/x-vertex">
+      // Vertex Shader //
+      precision mediump float;
+
+      attribute vec2 a_position;
+
+      uniform vec2 u_resolution;
+      uniform vec2 u_translate;
+      uniform vec4 u_color;
+
+      void main() {
+        vec2 clipSpace = (a_position + u_translate) / u_resolution;
+        gl_Position = vec4(clipSpace, 0.0, 1.0);
+      }
+
+    </script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+      // Fragment Shader //
+      precision mediump float;
+
+      uniform vec4 u_color;
+
+      void main() {
+        gl_FragColor = u_color;
+      }
+    </script>
+    <!----- End Shader Scripts ----->
+
+  </head>
+  <body onload="start();">
+    <div id="draw-space">
+      <canvas id="canvas" style="border: 1px solid black" width="700" height="700">
+        How sad for you
+      </canvas>
+    </div>
+    <div class="controls">
+      <button id="generate-nodes" onclick="generateNodes()">Generate Nodes</button>
+      <input type="number" id="number-of-nodes" min="0" value="12"><br>
+      <button id="generate-edges" onclick="generateEdges()">Generate Edges</button>
+      <input type="number" id="generator" min="2" value="2"><br>
+      <!--<button id="planarize" onclick="planarizeGraph()">Planarize</button>-->
+    </div>
+    <div id="adjacency-matrix"> </div>
+    <div class="instructions">
+      <p>Press (space) to drop a node at current mouse position</p>
+      <p>Hold (shift) and drag from one node to another to create an edge</p>
+      <p>Hold (ctrl) and click a node or edge to delete it</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+Change to directed graphs
+Planarize!
+Have the line follow the cursor when creating edge
+
+
+
+
+
+BUGS
+Edges not removed from node's edge array on deletion
