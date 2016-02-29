@@ -107,10 +107,7 @@ function createEdge(gl, adjacencyMatrix, startNode, endNode, color, directed ) {
 
     pointIsInMySpace: function(x, y) {
       var slope = (this.endNode.position[1] - this.startNode.position[1]) / (this.endNode.position[0] - this.startNode.position[0]);
-      if (y > slope*(x - this.startNode.position[0]) + this.startNode.position[1] - 2*this.offset && y < slope*(x - this.startNode.position[0]) + this.startNode.position[1] + 2*this.offset) {
-        return true;
-      }
-
+      return (y > slope*(x - this.startNode.position[0]) + this.startNode.position[1] - 2*this.offset && y < slope*(x - this.startNode.position[0]) + this.startNode.position[1] + 2*this.offset);
     },
 
     delete: function() {

@@ -5,6 +5,8 @@ var matrixDiv;
 var globals = {
     nodeRadius: 15,
     currentEdgeColor: 0,
+    
+    // Edge colors
     edgeColors: [
       [1.0, 0.0, 0.0, 1.0],
       [0.0, 1.0, 0.0, 1.0],
@@ -14,7 +16,6 @@ var globals = {
       [0.0, 1.0, 1.0, 1.0],
       [1.0, 1.0, 1.0, 1.0]
     ],
-    
     nextEdgeColor: function(){
       this.currentEdgeColor = (this.currentEdgeColor + 1) % this.edgeColors.length;
      }
@@ -140,7 +141,6 @@ function setupMouseHandlers() {
 
 function setupKeyboardHandlers() {
   document.addEventListener('keydown', function(event) {
-    var actionButtons = document.getElementsByName('action');
     if (mouse.selectedNode && !mouse.shiftDown) {
       resetSelectedNode();
     }
@@ -157,15 +157,6 @@ function setupKeyboardHandlers() {
         if (mouse.x > -horizontal && mouse.x < horizontal && mouse.y > -vertical && mouse.y <= vertical) {
           elements.push(createNode(gl, adjacencyMatrix, globals.nodeRadius, [mouse.x, mouse.y]));
         }
-        break;
-      case 65: // a
-        actionButtons[0].checked = true;
-        break;
-      case 83: // s
-        actionButtons[1].checked = true;
-        break;
-      case 68: // d
-        actionButtons[2].checked = true;
         break;
     }
   });
@@ -365,4 +356,46 @@ function generateEdges() {
   
   globals.nextEdgeColor();
     
+}
+
+
+function inputAdjacencyMatrix() {
+  var matrixInput = document.getElementById("adjacency-input-field").value;
+  var validatedMatrix = []; 
+  
+  for (var i = 1, endInput = matrixInput.length; i < endInput; i += 2) {
+    if (matrixInput[i] !== '0' && matrixInput[i] !== '1'){
+      throw "Invalid input";
+    } else {
+      validatedMatrix.push(Number(matrixInput[i]));
+    }
+  }
+  
+  var numberOfElements = Math.sqrt(validatedMatrix.length);  
+  if (numberOfElements % 1 !== 0 || numberOfElements <= 0) {
+    throw "Adjacency matrix must be square";
+  }
+  
+  var currentX = -(canvas.width / 2) + globals.nodeRadius;
+  var currentY = (canvas.height / 2) - globals.nodeRadius;
+  for (var i = 0; i < numberOfElements; i++) {
+    elements.push(createNode(gl, adjacencyMatrix, globals.nodeRadius, [currentX, currentY]));
+    currentX += 4 * globals.nodeRadius;
+    if (currentX > (canvas.width / 2) - globals.nodeRadius) {
+      currentX = -(canvas.width / 2) + globals.nodeRadius;
+      currentY -= 4 * globals.nodeRadius;
+    }
+  }
+
+  for (var i = 0; i < numberOfElements * numberOfElements; i++) {
+    if (validatedMatrix[i] == 1) {
+      var node1 = elements[Math.floor(i / numberOfElements)];
+      var node2 = elements[i % numberOfElements];
+      var newEdge = createEdge(gl, adjacencyMatrix, node1, node2, globals.edgeColors[globals.currentEdgeColor]);
+      elements.push(newEdge);
+      node1.edges.push(newEdge);
+      node2.edges.push(newEdge);
+    }
+  }
+  
 }
