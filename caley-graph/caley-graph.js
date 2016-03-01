@@ -5,6 +5,8 @@ var matrixDiv;
 var globals = {
     nodeRadius: 15,
     currentEdgeColor: 0,
+    gridSpacing: 60,
+    lockToGrid: false,
     
     // Edge colors
     edgeColors: [
@@ -152,6 +154,7 @@ function setupKeyboardHandlers() {
         mouse.ctrlDown = true;
         break;
       case 32: // Space
+        event.preventDefault();
         var horizontal = canvas.width / 2;
         var vertical = canvas.height / 2;
         if (mouse.x > -horizontal && mouse.x < horizontal && mouse.y > -vertical && mouse.y <= vertical) {
@@ -298,7 +301,11 @@ function handleMouseMove(event) {
   mouse.y = - (event.clientY - canvasRect.top - (canvas.height / 2));
 
   if (mouse.isDown && mouse.selectedNode && !mouse.shiftDown && !mouse.ctrlDown ) {
-    mouse.selectedNode.updatePosition([mouse.x, mouse.y]);
+    if (!globals.lockToGrid) {
+      mouse.selectedNode.updatePosition([mouse.x, mouse.y]);
+    } else {
+      mouse.selectedNode.updatePosition(getNearestGridPosition(mouse.x, mouse.y));
+    }
   }
 }
 
@@ -322,19 +329,28 @@ function cleanElementArray(array) {
 }
 
 
+function getNearestGridPosition(x, y) {
+  if (globals.gridSpacing <= 0) {
+    return [x, y];
+  } else {
+    return [globals.gridSpacing * Math.floor(x / globals.gridSpacing), globals.gridSpacing * Math.floor(y / globals.gridSpacing)];
+  }
+}
+
+
 // Controls //
 
 function generateNodes() {
   var numberOfNodes = document.getElementById("number-of-nodes").value;
-  var currentX = -(canvas.width / 2) + globals.nodeRadius;
-  var currentY = (canvas.height / 2) - globals.nodeRadius;
+  var currentX = -(canvas.width / 2) + globals.gridSpacing;
+  var currentY = (canvas.height / 2) - globals.gridSpacing;
     
   for (var i = 0; i < numberOfNodes; i++) {
     elements.push(createNode(gl, adjacencyMatrix, globals.nodeRadius, [currentX, currentY]));
-    currentX += 4 * globals.nodeRadius;
-    if (currentX > (canvas.width / 2) - globals.nodeRadius) {
-      currentX = -(canvas.width / 2) + globals.nodeRadius;
-      currentY -= 4 * globals.nodeRadius;
+    currentX += globals.gridSpacing;
+    if (currentX > (canvas.width / 2) - globals.gridSpacing) {
+      currentX = -(canvas.width / 2) + globals.gridSpacing;
+      currentY -= globals.gridSpacing;
     }
   }
   
@@ -376,14 +392,14 @@ function inputAdjacencyMatrix() {
     throw "Adjacency matrix must be square";
   }
   
-  var currentX = -(canvas.width / 2) + globals.nodeRadius;
-  var currentY = (canvas.height / 2) - globals.nodeRadius;
+  var currentX = -(canvas.width / 2) + globals.gridSpacing;
+  var currentY = (canvas.height / 2) - globals.gridSpacing;
   for (var i = 0; i < numberOfElements; i++) {
     elements.push(createNode(gl, adjacencyMatrix, globals.nodeRadius, [currentX, currentY]));
-    currentX += 4 * globals.nodeRadius;
-    if (currentX > (canvas.width / 2) - globals.nodeRadius) {
-      currentX = -(canvas.width / 2) + globals.nodeRadius;
-      currentY -= 4 * globals.nodeRadius;
+    currentX += globals.gridSpacing;
+    if (currentX > (canvas.width / 2) - globals.gridSpacing) {
+      currentX = -(canvas.width / 2) + globals.gridSpacing;
+      currentY -= globals.gridSpacing;
     }
   }
 
@@ -398,4 +414,9 @@ function inputAdjacencyMatrix() {
     }
   }
   
+}
+
+
+function toggleGrid() {
+  globals.lockToGrid = document.getElementById("toggle-grid").checked;
 }
