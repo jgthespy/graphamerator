@@ -4,6 +4,7 @@ function createNode(gl, adjacencyMatrix, radius, position, color) {
     type: "node",
     index: adjacencyMatrix.numElements,
     value: adjacencyMatrix.numElements,
+    groupNumber: adjacencyMatrix.numElements,
     clean: false,
     positionBuffer: gl.createBuffer(),
     color: color || [1.0, 1.0, 1.0, 1.0],
@@ -118,6 +119,9 @@ function createEdge(gl, adjacencyMatrix, startNode, endNode, color, directed ) {
   }
 
   adjacencyMatrix.addEdge(edge.startNode.index, edge.endNode.index);
+
+  // Group 
+  edge.endNode.groupNumber = edge.startNode.groupNumber;
 
   edge.updatePosition();
 

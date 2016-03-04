@@ -1,4 +1,4 @@
-Reorganize everything.  EVERYTHING
+Clean up this trainwreck before doing anything else
 
 Change to directed graphs
 Planarize!
@@ -6,6 +6,8 @@ Have the line follow the cursor when creating edge
 
 
 
+NOTES
+numNodes vs numElements (whaaaaaat?)
 
 
 BUGS

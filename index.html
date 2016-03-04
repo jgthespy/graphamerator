@@ -4,10 +4,14 @@
     <title>Graphamerator</title>
     <meta property="og:image" content="http://picklenerd.com/math/graphamerator/graph.png"/>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="webgl-helpers.js"></script>
-    <script type="text/javascript" src="helpers.js"></script>
-    <script type="text/javascript" src="caley-graph/caley-graph.js"></script>
-    <script type="text/javascript" src="caley-graph/graph-elements.js"></script>
+    <script type="text/javascript" src="scripts/webgl-helpers.js"></script>
+    <script type="text/javascript" src="scripts/helpers.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <script type="text/javascript" src="scripts/graph-elements.js"></script>
+    <script type="text/javascript" src="scripts/adjacency-matrix.js"></script>
+    <script type="text/javascript" src="scripts/handlers.js"></script>
+    <script type="text/javascript" src="scripts/controls.js"></script>
+    
 
     <!------- Shader Scripts ------->
     <script id="shader-vs" type="x-shader/x-vertex">
@@ -60,7 +64,7 @@
       <button id="adjacency-input-button" onclick="inputAdjacencyMatrix()">Input Adjacency Matrix</button>
         <input type="text" id="adjacency-input-field"><br>
         Example: [0,0,1;0,0,0;1,0,0] for a 3x3 with an edge between 1 and 3. You can also use commas instead of semicolons</br>        
-      <!--<button id="planarize" onclick="planarizeGraph()">Planarize</button>-->
+      <button id="planarize" onclick="planarizeGraph()">Planarize</button>
     </div>
     <div id="adjacency-matrix"> </div>
     <a href="https://github.com/jgthespy/graphamerator">GitHub</a>
