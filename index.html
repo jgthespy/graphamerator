@@ -11,6 +11,7 @@
     <script type="text/javascript" src="scripts/adjacency-matrix.js"></script>
     <script type="text/javascript" src="scripts/handlers.js"></script>
     <script type="text/javascript" src="scripts/controls.js"></script>
+    <script type="text/javascript" src="scripts/tikz.js"></script>
     
 
     <!------- Shader Scripts ------->
@@ -63,9 +64,17 @@
         <input type="number" id="generator" min="2" value="2"><br>
       <button id="adjacency-input-button" onclick="inputAdjacencyMatrix()">Input Adjacency Matrix</button>
         <input type="text" id="adjacency-input-field"><br>
-        Example: [0,0,1;0,0,0;1,0,0] for a 3x3 with an edge between 1 and 3. You can also use commas instead of semicolons</br>        
+        Example: [0,0,1;0,0,0;1,0,0] for a 3x3 with an edge between 1 and 3. You can also use commas instead of semicolons<br>        
       <button id="planarize" onclick="planarizeGraph()">Planarize</button>
     </div>
+    <div class="tikz">
+      <h4>TikZ Stuff</h4>
+      <input type="text" id="tikz-color" value="red"> TikZ color name<br>
+      <input type="number" id="tikz-width" min="1" max="100" value="5"> TikZ graph width<br>
+      <button id="tikz-button" onclick="generateTikZ()">Generate TikZ</button><br>
+      <code id="tikz-output"></code>
+    </div>
+    
     <div id="adjacency-matrix"> </div>
     <a href="https://github.com/jgthespy/graphamerator">GitHub</a>
   </body>

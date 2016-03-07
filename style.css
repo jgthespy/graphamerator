@@ -23,6 +23,14 @@ html {
     width: 50px;
 }
 
+#tikz-color input[type="text"]{
+  width: 50px;
+}
+
+.tikz code {
+  white-space: pre;
+  tab-size: 4;
+}
 
 #adjacency-matrix {
   display: none;
