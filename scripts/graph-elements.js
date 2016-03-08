@@ -82,20 +82,30 @@ function createEdge(gl, adjacencyMatrix, startNode, endNode, color, directed ) {
 		offset: 3,
 
 		updatePosition: function() {
+			var start = {
+				x: this.startNode.position[0],
+				y: this.startNode.position[1]
+			};
+			var end = {
+				x: this.endNode.position[0],
+				y: this.endNode.position[1]
+			};
+
 			var vertices = [
 				// Horizontal
-				this.startNode.position[0] + this.offset, this.startNode.position[1],
-				this.endNode.position[0] + this.offset, this.endNode.position[1],
-				this.endNode.position[0] - this.offset, this.endNode.position[1],
-				this.startNode.position[0] - this.offset, this.startNode.position[1],
-				this.startNode.position[0] + this.offset, this.startNode.position[1],
+				start.x + this.offset, start.y,
+				end.x + this.offset, end.y,
+				end.x - this.offset, end.y,
+				start.x - this.offset, start.y,
+				start.x + this.offset, start.y,
 
 				// Vertical
-				this.startNode.position[0], this.startNode.position[1] + this.offset,
-				this.endNode.position[0], this.endNode.position[1] + this.offset,
-				this.endNode.position[0], this.endNode.position[1] - this.offset,
-				this.startNode.position[0], this.startNode.position[1] - this.offset,
-				this.startNode.position[0], this.startNode.position[1] + this.offset
+				start.x, start.y + this.offset,
+				end.x, end.y + this.offset,
+				end.x, end.y - this.offset,
+				start.x, start.y - this.offset,
+				start.x, start.y + this.offset
+
 			];
 
 			gl.bindBuffer(gl.ARRAY_BUFFER, edge.positionBuffer);

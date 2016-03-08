@@ -6,7 +6,7 @@ function generateTikZ() {
 	var graphWidth = document.getElementById("tikz-width").value;
 
 	var scale = 2 * graphWidth / canvas.width;
-  
+	
 	elements.forEach(function(element) {
 		if (element.type == "node") {
 			var i = element.value;
@@ -20,6 +20,6 @@ function generateTikZ() {
 
 
 
-  codeBlock.innerHTML = "\\[\\begin{tikzpicture}\n" + nodeString + edgeString + "\\end{tikzpicture}\\]";   
+	codeBlock.innerHTML = "\\[\\begin{tikzpicture}\n" + nodeString + edgeString + "\\end{tikzpicture}\\]";   
 }
 

@@ -50,14 +50,10 @@ function start() {
 
 	// Draw
 	requestAnimationFrame(function(){
-		drawScene(gl, shaderProgram)
+		drawScene(gl, shaderProgram);
 	});
 
 }
-
-
-
-
 
 function initWebGL(gl){
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -108,6 +104,6 @@ function drawScene(gl, shaderProgram){
 	});
 
 	requestAnimationFrame(function(){
-		drawScene(gl, shaderProgram, elements)
+		drawScene(gl, shaderProgram, elements);
 	});
 }
