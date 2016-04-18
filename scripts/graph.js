@@ -1,30 +1,73 @@
-function Graph() {
-	this.settings = {};
-	this.adjacencyMatrix = [];
-	this.nodes = [];
-	this.edges = [];
+class AdjacencyMatrix {  // babbby's first es2015 class
+	constructor() {
+		this.thingie = 5;
+	}
 	
-	this.addNode = function(position){
-		this.nodes.push(new Node(this.settings, position));
-		// Add to adjacencyMatrix
-	};
+	addNode() {
+		console.log("Adding node");
+	}
 	
-	this.addEdge = function(startNode, endNode, directed) {
-		var newEdge = new Edge(this.settings, startNode, endNode, directed);
-		this.edges.push(newEdge);
-		startNode.addEdge(endNode);
-		endNode.addEdge(startNode);	
-		
-		// Add to adjacencyMatrix	
-	};
+	addEdge() {
+		console.log("Adding edge");
+	}
+	
+	set thing(value) {
+		this.thingie = value;
+	}
+	
+	get thing() {
+		return this.thingie;
+	}
 }
 
-function Node(graphSettings, position, value) {
-	// Graph stuff
-	this.value = value | 0;
-	this.edges = [];
+class Graph {
+	constructor() {
+		this.settings = {};
+		this.adjacencyMatrix = [];
+		this.nodes = [];
+		this.edges = [];
+	}
 	
-/*{
+	addNode(position) {
+		var newNode = new Node(this.settings, this.nodes.length, position);
+		this.nodes.push(newNode);
+		return newNode;
+		// Add to adjacencyMatrix
+	}
+	
+	addEdge(startNode, endNode, directed) {
+		var newEdge = new Edge(this.settings, this.edges.length, startNode, endNode, directed);
+		this.edges.push(newEdge);
+		startNode.addEdge(newEdge);
+		endNode.addEdge(newEdge);	
+		return newEdge;
+		// Add to adjacencyMatrix	
+	}
+	
+	print(){
+		console.log(this.nodes);
+		console.log(this.edges);	
+	}
+}
+
+class Node {
+	constructor (graphSettings, index, position, value) {	
+		this.value = value | 0;
+		this.edges = [];
+		this.graphIndex = index;
+	}
+	
+	addEdge(newEdge) {
+		this.edges.push(newEdge);	
+	}
+	
+	getAdjacent() {
+		return this.edges[0].getNeighbor(this);
+	};
+	
+	
+/*
+{
 	// Drawspace stuff
 	this.drawSpace = {
 		position: 		position,
@@ -53,25 +96,29 @@ function Node(graphSettings, position, value) {
 	};
 	
 	this.webgl.init();
-}*/
-	
-	this.addEdge = function (neighbor) {
-		this.edges.push(neighbor);	
-	};
-
-	this.isAdjacent = function (nodeToCheck) {
-		this.edges[0].getAdjacent(this);
-	};
+}
+*/
 
 }
 
-function Edge(graphSettings, startNode, endNode, directed) {
-	// Graph stuff
-	this.startNode = startNode;
-	this.endNode = endNode;
-	this.directed = directed;
+class Edge {
+	constructor(graphSettings, index, startNode, endNode, directed){
+		this.startNode = startNode;
+		this.endNode = endNode;
+		this.directed = directed | false;
+		this.graphIndex = index;		
+	}
 	
-/*{
+	getNeighbor(callerNode) {
+		if (this.directed) {
+			return (callerNode === this.endNode) ? null : this.startNode;
+		} else {
+			return callerNode === this.startNode ? this.endNode : this.startNode;
+		}		
+	}
+	
+/*
+{
 	// Drawspace stuff
 	this.color;
 		
@@ -86,27 +133,24 @@ function Edge(graphSettings, startNode, endNode, directed) {
 	};
 
 	this.webgl.init();
-}*/
-	
-	
-	this.getAdjacent = function(callerNode) {
-		if (this.directed) {
-			return (callerNode === this.endNode) ? null : this.startNode;
-		} else {
-			return callerNode === this.startNode ? this.endNode : this.startNode;
-		}		
-	};
+}
+*/
 	
 }
 
 
 function start() {
-	var test = new Graph();
-	test.addNode();
-	test.addNode();
-	test.addEdge(test.nodes[0], test.nodes[1]);
-	console.log(test);
+	let test = new Graph();
+	let node1 = test.addNode();
+	let node2 = test.addNode();
+	test.addEdge(node1, node2, false);
+	test.print();
 	
-	console.log(test.nodes[0].isAdjacent(test.nodes[1]));
+	let am = new AdjacencyMatrix();
+	am.addNode();
+	am.addEdge();
+	console.log(am.thing);
+	am.thing = 3;
+	console.log(am.thing);
 }
 

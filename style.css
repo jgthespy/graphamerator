@@ -13,12 +13,6 @@ html {
   pointer-events: none;
 }
 
-.instructions {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 20px;
-}
-
 .controls input[type="number"]{
     width: 50px;
 }

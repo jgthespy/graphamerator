@@ -53,18 +53,8 @@
         How sad for you
       </canvas>
     </div>
-    <div class="instructions">
-      <p>Press (space) to drop a node at current mouse position</p>
-      <p>Hold (shift) and drag from one node to another to create an edge</p>
-      <p>Hold (ctrl) and click a node or edge to delete it</p>
-    </div>
-
     <div class="controls">
       <input type="checkbox" id="toggle-grid" onclick="toggleGrid()">Lock to grid<br>
-      <button id="generate-nodes" onclick="generateNodes()">Generate Nodes</button>
-        <input type="number" id="number-of-nodes" min="0" value="12"><br>
-      <button id="generate-edges" onclick="generateEdges()">Generate Edges</button>
-        <input type="number" id="generator" min="2" value="2"><br>
       <button id="adjacency-input-button" onclick="inputAdjacencyMatrix()">Input Adjacency Matrix</button>
         <input type="text" id="adjacency-input-field"><br>
         Example: [0,0,1;0,0,0;1,0,0] for a 3x3 with an edge between 1 and 3. You can also use commas instead of semicolons<br>        
