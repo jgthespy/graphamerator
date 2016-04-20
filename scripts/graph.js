@@ -1,22 +1,78 @@
-class AdjacencyMatrix {  // babbby's first es2015 class
-	constructor() {
-		this.thingie = 5;
+class AdjacencyMatrix {  
+	constructor(directed) {
+		this.directed = directed;
+		this.matrix = [];
+		this.numNodes = 0;
 	}
 	
 	addNode() {
-		console.log("Adding node");
+		let newMatrix = [];
+		this.numNodes++;
+		
+		for (let i = 0; i < this.numNodes * this.numNodes; i++) {
+			let col = i % this.numNodes;
+			let row = Math.floor(i / this.numNodes);
+			if (col < this.numNodes - 1 && row < this.numNodes - 1) {
+				newMatrix.push(this.matrix[i - row]);
+			} else {
+				newMatrix.push(0);
+			}
+		}
+		this.matrix = newMatrix;
+		return this.numNodes;		
 	}
 	
-	addEdge() {
-		console.log("Adding edge");
+	removeNode(node) {
+		var newMatrix = [];
+		node = Math.floor(node);
+		if (node < 0 || node > this.numElements) {
+			throw node + " is an invalid vertex";
+		} else {
+			for (let i = 0; i < this.numNodes * this.numNodes; i++) {
+				let col = i % this.numNodes;
+				let row = Math.floor(i / this.numNodes);
+				if (col != node && row != node) {
+					newMatrix.push(this.matrix[i]);
+				}
+			}
+		}
+		this.numNodes--;
+		this.matrix = newMatrix;		
 	}
 	
-	set thing(value) {
-		this.thingie = value;
+	setEdge(start, end, value) {
+		start = Math.floor(start);
+		end = Math.floor(end);
+		value = value == true ? 1 : 0; 
+		if (start > this.numNodes || start < 0) {
+			throw start + " is not a valid vertex";
+		} else if (end > this.numNodes || end < 0){
+			throw end + " is not a valid vertex";
+		} else {
+			this.matrix[this.numNodes * start + end] = value;
+			if (!this.directed) {
+				this.matrix[this.numNodes * end + start] = value;
+			}
+		}
 	}
 	
-	get thing() {
-		return this.thingie;
+	isAdjacent(i, j) {
+		return Boolean(this.matrix[this.numNodes * (i - 1) + j - 1]);
+	}
+	
+	print() {
+		let nextLine = "%c  ";
+		for (let k = 0; k < this.numNodes; k++) {
+			nextLine = nextLine + k + " ";
+		}
+		console.log(nextLine, "color: #AAA");
+		for(let i = 0; i < this.numNodes; i++) {
+			nextLine = "%c" + i + "%c" + " ";
+			for (let j = 0; j < this.numNodes; j++) {
+				nextLine = nextLine + this.matrix[this.numNodes * i + j] + " ";
+			}
+			console.log(nextLine, "color: #AAA", "color: black");
+		}
 	}
 }
 
@@ -144,13 +200,19 @@ function start() {
 	let node1 = test.addNode();
 	let node2 = test.addNode();
 	test.addEdge(node1, node2, false);
-	test.print();
 	
-	let am = new AdjacencyMatrix();
+	let am = new AdjacencyMatrix(false);
+	am.addNode(); 
+	am.addNode(); 
+	am.setEdge(0, 1, 1);
 	am.addNode();
-	am.addEdge();
-	console.log(am.thing);
-	am.thing = 3;
-	console.log(am.thing);
+	am.removeNode(1);
+	am.addNode();
+	am.addNode();
+	am.addNode();
+	am.setEdge(0, 1, 1);
+	am.setEdge(1, 2, 1);
+	am.setEdge(4, 2, 1);
+	am.print();
 }
 
