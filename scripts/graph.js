@@ -77,27 +77,28 @@ class AdjacencyMatrix {
 }
 
 class Graph {
-	constructor() {
+	constructor(directed) {
 		this.settings = {};
-		this.adjacencyMatrix = [];
+		this.adjacencyMatrix = new AdjacencyMatrix(directed);
 		this.nodes = [];
 		this.edges = [];
+		this.directed = directed || false;
 	}
 	
 	addNode(position) {
 		var newNode = new Node(this.settings, this.nodes.length, position);
 		this.nodes.push(newNode);
+		this.adjacencyMatrix.addNode();
 		return newNode;
-		// Add to adjacencyMatrix
 	}
 	
 	addEdge(startNode, endNode, directed) {
 		var newEdge = new Edge(this.settings, this.edges.length, startNode, endNode, directed);
 		this.edges.push(newEdge);
 		startNode.addEdge(newEdge);
-		endNode.addEdge(newEdge);	
+		endNode.addEdge(newEdge);
+		this.adjacencyMatrix.setEdge(startNode, endNode, 1);	
 		return newEdge;
-		// Add to adjacencyMatrix	
 	}
 	
 	print(){
@@ -196,10 +197,10 @@ class Edge {
 
 
 function start() {
-	let test = new Graph();
+	let test = new Graph(false);
 	let node1 = test.addNode();
 	let node2 = test.addNode();
-	test.addEdge(node1, node2, false);
+	test.addEdge(node1, node2);
 	
 	let am = new AdjacencyMatrix(false);
 	am.addNode(); 
