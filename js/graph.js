@@ -1,6 +1,6 @@
 class AdjacencyMatrix {  
 	constructor(directed) {
-		this.directed = directed;
+		this.directed = directed || false;
 		this.matrix = [];
 		this.numNodes = 0;
 	}
@@ -76,42 +76,12 @@ class AdjacencyMatrix {
 	}
 }
 
-class Graph {
-	constructor(directed) {
-		this.settings = {};
-		this.adjacencyMatrix = new AdjacencyMatrix(directed);
-		this.nodes = [];
-		this.edges = [];
-		this.directed = directed || false;
-	}
-	
-	addNode(position) {
-		var newNode = new Node(this.settings, this.nodes.length, position);
-		this.nodes.push(newNode);
-		this.adjacencyMatrix.addNode();
-		return newNode;
-	}
-	
-	addEdge(startNode, endNode, directed) {
-		var newEdge = new Edge(this.settings, this.edges.length, startNode, endNode, directed);
-		this.edges.push(newEdge);
-		startNode.addEdge(newEdge);
-		endNode.addEdge(newEdge);
-		this.adjacencyMatrix.setEdge(startNode, endNode, 1);	
-		return newEdge;
-	}
-	
-	print(){
-		console.log(this.nodes);
-		console.log(this.edges);	
-	}
-}
-
 class Node {
-	constructor (graphSettings, index, position, value) {	
-		this.value = value | 0;
-		this.edges = [];
+	constructor (index, value, object) {	
 		this.graphIndex = index;
+		this.value = value || 0;
+		this.displayObject = object || null;
+		this.edges = [];				
 	}
 	
 	addEdge(newEdge) {
@@ -122,98 +92,71 @@ class Node {
 		return this.edges[0].getNeighbor(this);
 	};
 	
+	setValue(newValue) {
+		this.value = newValue;
+	}
 	
-/*
-{
-	// Drawspace stuff
-	this.drawSpace = {
-		position: 		position,
-		radius: 		graphSettings.radius,
-		color: 			[1.0, 1.0, 1.0, 1.0],
-		labelString: 	"",
-		labelElement: 	document.createElement("div"),
-		
-		changePosition: function(newPosition) {
-			this.position = newPosition;	
-		},
-		
-		changeColor: function(newColor) {
-			this.color = newColor;	
-		}
-	};
-
-	// WebGL stuff
-	this.webgl = {
-		positionBuffer: graphSettings.gl.createBuffer(),
-		drawStyle: 		graphSettings.gl.TRIANGLE_FAN,
-		
-		init: function() {
-			
-		}
-	};
-	
-	this.webgl.init();
-}
-*/
-
+	getValue() {
+		return this.value;
+	}
 }
 
 class Edge {
-	constructor(graphSettings, index, startNode, endNode, directed){
+	constructor(index, startNode, endNode, directed, object){
+		this.graphIndex = index;
 		this.startNode = startNode;
 		this.endNode = endNode;
-		this.directed = directed | false;
-		this.graphIndex = index;		
+		this.directed = directed || false;
+		this.displayObject = object;		
 	}
 	
 	getNeighbor(callerNode) {
 		if (this.directed) {
 			return (callerNode === this.endNode) ? null : this.startNode;
 		} else {
-			return callerNode === this.startNode ? this.endNode : this.startNode;
+			return (callerNode === this.startNode) ? this.endNode : this.startNode;
 		}		
 	}
-	
-/*
-{
-	// Drawspace stuff
-	this.color;
-		
-	// WebGL stuff
-	this.webgl = {
-		positionBuffer: graphSettings.gl.createBuffer,
-		drawStyle: 		graphSettings.gl.TRIANGLE_STRIP,
-		
-		init: function() {
-			
-		}
-	};
 
-	this.webgl.init();
-}
-*/
-	
 }
 
-
-function start() {
-	let test = new Graph(false);
-	let node1 = test.addNode();
-	let node2 = test.addNode();
-	test.addEdge(node1, node2);
+class Graph {
+	constructor(directed) {
+		this.directed = directed || false;
+		this.adjacencyMatrix = new AdjacencyMatrix(directed);
+		this.nodes = [];
+		this.edges = [];
+	}
 	
-	let am = new AdjacencyMatrix(false);
-	am.addNode(); 
-	am.addNode(); 
-	am.setEdge(0, 1, 1);
-	am.addNode();
-	am.removeNode(1);
-	am.addNode();
-	am.addNode();
-	am.addNode();
-	am.setEdge(0, 1, 1);
-	am.setEdge(1, 2, 1);
-	am.setEdge(4, 2, 1);
-	am.print();
+	addNode(object) {
+		var newNode = new Node(this.nodes.length, object);
+		this.nodes.push(newNode);
+		this.adjacencyMatrix.addNode();
+		return newNode;
+	}
+	
+	addEdge(startNode, endNode, directed, object) {
+		var newEdge = new Edge(this.edges.length, startNode, endNode, directed, object);
+		this.edges.push(newEdge);
+		startNode.addEdge(newEdge);
+		endNode.addEdge(newEdge);
+		this.adjacencyMatrix.setEdge(startNode, endNode, 1);	
+		return newEdge;
+	}
+	
+	findNodesByValue(value) {
+		let foundNodes = []
+		this.nodes.forEach(function (node) {
+			if (node.getValue() === value) {
+				foundNodes.push(node);
+			}
+		});
+		return foundNodes;
+	}
+	
+	print(){
+		console.log(this.nodes);
+		console.log(this.edges);	
+	}
 }
 

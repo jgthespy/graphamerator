@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Graphamerator</title>
+    <meta property="og:image" content="http://picklenerd.com/math/graphamerator/graph.png"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  	<script type="text/javascript" src="scripts/graph.js"></script>
+    <script type="text/javascript" src="scripts/three.min.js"></script>
+
+    <!------- Shader Scripts ------->
+    <script id="shader-vs" type="x-shader/x-vertex">
+      // Vertex Shader //
+      precision mediump float;
+
+      attribute vec2 a_position;
+
+      uniform vec2 u_resolution;
+      uniform vec2 u_translate;
+      uniform vec4 u_color;
+
+      void main() {
+        vec2 clipSpace = (a_position + u_translate) / u_resolution;
+        gl_Position = vec4(clipSpace, 0.0, 1.0);
+      }
+
+    </script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+      // Fragment Shader //
+      precision mediump float;
+
+      uniform vec4 u_color;
+
+      void main() {
+        gl_FragColor = u_color;
+      }
+    </script>
+    <!----- End Shader Scripts ----->
+
+  </head>
+  <body onload="start();">
+    <div id="draw-space">
+      <canvas id="canvas" style="border: 1px solid black" width="700" height="700">
+        How sad for you
+      </canvas>
+    </div>
+    <div class="controls">
+      <input type="checkbox" id="toggle-grid" onclick="toggleGrid()">Lock to grid<br>
+      <button id="adjacency-input-button" onclick="inputAdjacencyMatrix()">Input Adjacency Matrix</button>
+        <input type="text" id="adjacency-input-field"><br>
+        Example: [0,0,1;0,0,0;1,0,0] for a 3x3 with an edge between 1 and 3. You can also use commas instead of semicolons<br>        
+      <button id="planarize" onclick="planarizeGraph()">Planarize</button>
+    </div>
+    <div class="tikz">
+      <h4>TikZ Stuff</h4>
+      <input type="text" id="tikz-color" value="red"> TikZ color name<br>
+      <input type="number" id="tikz-width" min="1" max="100" value="5"> TikZ graph width<br>
+      <button id="tikz-button" onclick="generateTikZ()">Generate TikZ</button><br>
+      <code id="tikz-output"></code>
+    </div>
+    
+    <div id="adjacency-matrix"> </div>
+    <a href="https://github.com/jgthespy/graphamerator">GitHub</a>
+  </body>
+</html>
