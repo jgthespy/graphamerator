@@ -1,6 +1,6 @@
-## **_graph.js_**
+# **_graph.js_**
 
-*class AdjacencyMatrix*  
+**class AdjacencyMatrix**  
 constructor(directed)  
 addNode()  
 removeNode(node)  
@@ -8,18 +8,18 @@ setEdge(start, end, value)
 isAdjacent(i, j)  
 print()  
 
-*class Node*  
+**class Node**  
 constructor (index, value, object)    	
 addEdge(newEdge)  
 getAdjacent()  
 setValue(newValue)  
 getValue()  
 
-*class Edge*  
+**class Edge**  
 constructor(index, startNode, endNode, directed, object)  
 getNeighbor(callerNode)  
 
-*class Graph*  
+**class Graph**  
 constructor(directed)  
 addNode(object)  
 addEdge(startNode, endNode, directed, object)  	
@@ -28,13 +28,13 @@ setAdjacencyMatrix(newMatrix)
 print()  
 
 
-## **_controls.js_**
+# **_controls.js_**
 
 function printAdjacencyMatrix()  
 function inputAdjacencyMatrix()  
 
 
-## **_main.js_**
+# **_main.js_**
 
 function init()  
 function render()  
