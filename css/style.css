@@ -17,14 +17,23 @@ body {
 .controls {
 	display: block;
 	vertical-align: top;
-	width: 400px;
+	width: 450px;
 	border: 2px solid #888888;
+}
+
+.adjacency {
+	display: none;
+}
+
+.adjacency p {
+	font-size: 0.75em;
+	margin: 0px;
 }
 
 .debug-info {
 	display: block;
 	vertical-align: top;
-	width: 400px;
+	width: 450px;
 	border: 2px solid #333333;
 }
 

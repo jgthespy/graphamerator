@@ -14,7 +14,14 @@
 	<div class="canvas"></div>
 	<div class="sidebar">
 		<div class="controls">
-			<input type="button" value="Print adjacency matrix" onclick="printAdjacencyMatrix()">
+			<input type="button" value="Print adjacency matrix to console" onclick="printAdjacencyMatrix()"><br>
+			<input type="button" name="input-adjacency-button" value="Input adjacency matrix" onclick="inputAdjacencyMatrix()"><br>
+			<div class="adjacency">
+				<textarea name="adjacency-input" rows="10" cols="20" wrap="hard"></textarea>
+				<p>Type or paste your adjacency matrix into the box. You can resize the box.</p>
+				<p>Separate numerical entries with one or more non-numerical characters including line breaks.</p>
+				<p>The matrix itself must be square but formatting the input as a square is not required.</p>
+			</div>
 		</div>
 		<div class="debug-info"></div>
 	</div>

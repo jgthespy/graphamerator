@@ -154,6 +154,14 @@ class Graph {
 		return foundNodes;
 	}
 	
+	setAdjacencyMatrix(newMatrix) {
+		this.nodes = [];
+		this.edges = [];
+		this.adjacencyMatrix = newMatrix;
+		
+		// Validate matrix, create nodes, 
+	}
+	
 	print(){
 		console.log(this.nodes);
 		console.log(this.edges);	
