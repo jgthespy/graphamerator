@@ -1,4 +1,4 @@
-# **_graph.js_**
+# *graph.js*
 
 **class AdjacencyMatrix**  
 constructor(directed)  
@@ -28,13 +28,13 @@ setAdjacencyMatrix(newMatrix)
 print()  
 
 
-# **_controls.js_**
+# *controls.js*
 
 function printAdjacencyMatrix()  
 function inputAdjacencyMatrix()  
 
 
-# **_main.js_**
+# *main.js*
 
 function init()  
 function render()  
