@@ -24,7 +24,7 @@ let mouse = {
 };
 
 // Objects
-let fullGraph = new Graph(false);
+let graph = new Graph(false);
 let nodes = [];
 let objectPlane = null;
 
@@ -108,5 +108,5 @@ function addNode(position){
 	newNode.position.copy(position);
 	nodes.push(newNode);
 	scene.add(newNode);
-	fullGraph.addNode(newNode);
+	graph.addNode(true, newNode);
 }

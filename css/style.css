@@ -22,12 +22,22 @@ body {
 }
 
 .adjacency {
-	display: none;
+	/* display: none; */
 }
 
 .adjacency p {
 	font-size: 0.75em;
 	margin: 0px;
+}
+
+.adjacency input[type=checkbox] {
+	vertical-align: top;
+}
+
+.adjacency input[type=checkbox]+p {
+	display: inline;
+	vertical-align: top;
+	font-size: 1em;
 }
 
 .debug-info {

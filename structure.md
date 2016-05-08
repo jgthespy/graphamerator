@@ -1,7 +1,7 @@
 # *graph.js*
 
 **class AdjacencyMatrix**  
-constructor(directed)  
+constructor()  
 addNode()  
 removeNode(node)  
 setEdge(start, end, value)  
@@ -16,13 +16,13 @@ setValue(newValue)
 getValue()  
 
 **class Edge**  
-constructor(index, startNode, endNode, directed, object)  
+constructor(index, startNode, endNode, object)  
 getNeighbor(callerNode)  
 
 **class Graph**  
-constructor(directed)  
+constructor()  
 addNode(object)  
-addEdge(startNode, endNode, directed, object)  	
+addEdge(startNode, endNode, object)  	
 findNodesByValue(value)  
 setAdjacencyMatrix(newMatrix)  
 print()  

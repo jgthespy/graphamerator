@@ -1,5 +1,5 @@
 function printAdjacencyMatrix() {
-	fullGraph.adjacencyMatrix.print();
+	graph.adjacencyMatrix.print();
 }
 
 function inputAdjacencyMatrix() {
@@ -10,28 +10,40 @@ function inputAdjacencyMatrix() {
 		adjacencyElement.style.display = "block";
 		adjacencyButton.value = "Submit matrix";
 	} else {
-		adjacencyElement.style.display = "none";
+		//adjacencyElement.style.display = "none";
 		adjacencyButton.value = "Input adjacency matrix";
 		
-		let entries = [];
+		let newMatrix = [];
 		let input = document.getElementsByName("adjacency-input")[0].value;
-		let currentInputValue = "";
 		
 		for (let i = 0, end = input.length; i < end; i++ ) {
-			if (Number.isSafeInteger(parseInt(input[i]))){
-				currentInputValue += input[i];
-			} else if (currentInputValue !== "") {
-				entries.push(parseInt(currentInputValue));
-				currentInputValue = "";
+			let entry = parseInt(input[i]);
+			if (entry === 0 || entry === 1){
+				newMatrix.push(entry);
 			}
-		}		
-		if (currentInputValue !== "") {
-			entries.push(parseInt(currentInputValue));
 		}
 		
-		if (entries.length > 0) {
-			fullGraph.setAdjacencyMatrix(entries);
-		}
-				
+		if (newMatrix.length > 0) {
+			let directed = document.getElementsByName("directed-input")[0].checked;
+			graph = new Graph(directed);
+			if (graph.adjacencyMatrix.validateMatrix(newMatrix)) {
+
+				let numberOfNodes = Math.floor(Math.sqrt(newMatrix.length));
+				// Create the nodes
+				for (let i = 0; i < numberOfNodes; i++) {
+					graph.addNode();
+				}
+				// Create the edges
+				for (let i = 0; i < numberOfNodes; i++) {
+					let row = Math.floor(i / numberOfNodes);
+					for (let j = 0; j < numberOfNodes; i++) {
+						let col = i % numberOfNodes;
+						if (newMatrix[row + col] === 1) {
+							graph.addEdge(row, col);
+						}
+					}
+				}
+			}
+		}				
 	} 
 }

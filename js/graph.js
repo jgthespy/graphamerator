@@ -1,3 +1,5 @@
+//  AdjacencyMatrix, Node, and Edge are general classes for graphs
+
 class AdjacencyMatrix {  
 	constructor(directed) {
 		this.directed = directed || false;
@@ -5,13 +7,40 @@ class AdjacencyMatrix {
 		this.numNodes = 0;
 	}
 	
+	validateMatrix(matrixToCheck) {
+		if (Math.sqrt(matrixToCheck.length) % 1 !== 0) {
+			// Want to eventually display this error on the page as well
+			console.log("Invalid matrix.  Square matrix required.");
+			return false;
+		} else {
+			matrixToCheck.forEach(function(element) {
+				if (element !== 0 && element !== 1) {
+					return false;
+				}
+			});	
+		}
+		
+		return true;
+	}
+	
+	setMatrix(newMatrix, directed) {
+		if (this.validateMatrix(newMatrix)) {
+			this.directed = directed || false;		
+			this.matrix = newMatrix;
+			this.numNodes = Math.floor(Math.sqrt(newMatrix.length));
+			return true;
+		}
+		
+		return false;	
+	}
+	
 	addNode() {
 		let newMatrix = [];
 		this.numNodes++;
 		
 		for (let i = 0; i < this.numNodes * this.numNodes; i++) {
-			let col = i % this.numNodes;
 			let row = Math.floor(i / this.numNodes);
+			let col = i % this.numNodes;			
 			if (col < this.numNodes - 1 && row < this.numNodes - 1) {
 				newMatrix.push(this.matrix[i - row]);
 			} else {
@@ -23,7 +52,7 @@ class AdjacencyMatrix {
 	}
 	
 	removeNode(node) {
-		var newMatrix = [];
+		let newMatrix = [];
 		node = Math.floor(node);
 		if (node < 0 || node > this.numElements) {
 			throw node + " is an invalid vertex";
@@ -41,9 +70,9 @@ class AdjacencyMatrix {
 	}
 	
 	setEdge(start, end, value) {
-		start = Math.floor(start);
-		end = Math.floor(end);
-		value = value == true ? 1 : 0; 
+		start = (start < 0) ? 0 : Math.floor(start);  
+		end = (end < 0) ? 0 : Math.floor(end);
+		value = (value < 0) ? 0 : Math.floor(value);		
 		if (start > this.numNodes || start < 0) {
 			throw start + " is not a valid vertex";
 		} else if (end > this.numNodes || end < 0){
@@ -57,7 +86,7 @@ class AdjacencyMatrix {
 	}
 	
 	isAdjacent(i, j) {
-		return Boolean(this.matrix[this.numNodes * (i - 1) + j - 1]);
+		return Boolean(this.matrix[this.numNodes * i + j]);
 	}
 	
 	print() {
@@ -77,10 +106,9 @@ class AdjacencyMatrix {
 }
 
 class Node {
-	constructor (index, value, object) {	
+	constructor (index, value) {	
 		this.graphIndex = index;
 		this.value = value || 0;
-		this.displayObject = object || null;
 		this.edges = [];				
 	}
 	
@@ -102,12 +130,11 @@ class Node {
 }
 
 class Edge {
-	constructor(index, startNode, endNode, directed, object){
+	constructor(index, startNode, endNode, directed){
 		this.graphIndex = index;
 		this.startNode = startNode;
 		this.endNode = endNode;
 		this.directed = directed || false;
-		this.displayObject = object;		
 	}
 	
 	getNeighbor(callerNode) {
@@ -115,56 +142,63 @@ class Edge {
 			return (callerNode === this.endNode) ? null : this.startNode;
 		} else {
 			return (callerNode === this.startNode) ? this.endNode : this.startNode;
-		}		
+		}	
 	}
-
 }
+
+
+// NodeData and EdgeData contain all relevant data specific to this program for a given node or edge
+
+function NodeData(nodeObject, displayObject, startPosition) {
+	this.node = nodeObject;
+	this.display = displayObject;
+	this.position = startPosition;
+}
+
+function EdgeData(edgeObject, displayObject) {
+	this.edge = edgeObject;
+	this.display = displayObject;
+}
+
+
+
+// Graph is mostly a general graph class but its nodes and edges are containers for data relevant to this program.
+// It shouldn't handle display data directly but it holds display data that can be accessed by the display controller.
+// I may end up taking display stuff out of this, but right now it's easier just to keep everything for a given node or edge together.  
 
 class Graph {
 	constructor(directed) {
 		this.directed = directed || false;
-		this.adjacencyMatrix = new AdjacencyMatrix(directed);
+		this.adjacencyMatrix = new AdjacencyMatrix();
 		this.nodes = [];
 		this.edges = [];
 	}
 	
-	addNode(object) {
-		var newNode = new Node(this.nodes.length, object);
+	addNode(displayObject) {
+		let newNode = new NodeData(
+			new Node(this.nodes.length, displayObject)
+		); 
 		this.nodes.push(newNode);
 		this.adjacencyMatrix.addNode();
 		return newNode;
 	}
 	
-	addEdge(startNode, endNode, directed, object) {
-		var newEdge = new Edge(this.edges.length, startNode, endNode, directed, object);
+	addEdge(startNode, endNode, directed, displayObject) {
+		let newEdge = new EdgeData(
+			new Edge(this.edges.length, startNode, endNode, directed, displayObject)
+		);
 		this.edges.push(newEdge);
 		startNode.addEdge(newEdge);
 		endNode.addEdge(newEdge);
-		this.adjacencyMatrix.setEdge(startNode, endNode, 1);	
+		this.adjacencyMatrix.setEdge(startNode, endNode, 1);
+	
 		return newEdge;
-	}
-	
-	findNodesByValue(value) {
-		let foundNodes = []
-		this.nodes.forEach(function (node) {
-			if (node.getValue() === value) {
-				foundNodes.push(node);
-			}
-		});
-		return foundNodes;
-	}
-	
-	setAdjacencyMatrix(newMatrix) {
-		this.nodes = [];
-		this.edges = [];
-		this.adjacencyMatrix = newMatrix;
-		
-		// Validate matrix, create nodes, 
 	}
 	
 	print(){
 		console.log(this.nodes);
-		console.log(this.edges);	
+		console.log(this.edges);
+		this.adjacencyMatrix.print();
 	}
 }
 
